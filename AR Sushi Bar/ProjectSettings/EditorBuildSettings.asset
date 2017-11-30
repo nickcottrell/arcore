@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SushiBar.unity
-    guid: 526e756bea5cc43129ac1e71e9f48a89
+    path: Assets/Scenes/TreasureHunt.unity
+    guid: ab3b9cd47e51a4e7685d25a5248b23fb
