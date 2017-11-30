@@ -16,10 +16,20 @@
 
 		public GameObject m_secondObject;
 
+		public GameObject m_endObject;
+
+		public GameObject applauseAudio;
+
+		public GameObject confettiParticle;
+
+		public Quaternion firstObjectRot;
+
+		public Vector3 firstObjectPos;
 
 		//***create a flag that we can switch on when we instantiate the object
 	 	public bool firstCreated = false;
 		public bool secondCreated = false;
+		public bool thirdCreated = false;
 
         public GameObject m_searchingForPlaneUI;
 
@@ -45,7 +55,15 @@
             new Color(1.0f, 0.756f, 0.027f)
         };
 			
-        public void Update ()
+		public void Start ()
+		{
+			applauseAudio.SetActive (false);
+			confettiParticle.SetActive (false);
+		}
+
+
+
+		public void Update ()
         {
             _QuitOnConnectionErrors();
 
@@ -91,24 +109,31 @@
             m_searchingForPlaneUI.SetActive(showSearchingUI);
 
      
-								
+						//BASIC GAME LOGIC CONDITIONS	
 				
 					
-						if (firstCreated == false && secondCreated == false) {
+						if (firstCreated == false && secondCreated == false && thirdCreated == false) {
 							
 							MakeObjectNow (m_firstObject, "first" );
 							
 						}
 
-						if (firstCreated == true && secondCreated == false) {
+						if (firstCreated == true && secondCreated == false  && thirdCreated == false) {
 		
 							MakeObjectNow (m_secondObject, "second" );
 
 						}
 
-						if (firstCreated == true && secondCreated == true) {
+						if (firstCreated == true && secondCreated == true  && thirdCreated == false) {
 														
-							//DO NOTHING ...for now!	
+							TouchParty (m_endObject);
+
+						
+						}
+
+						if (firstCreated == true && secondCreated == true  && thirdCreated == true) {
+
+						// do nothing
 
 						}
 
@@ -149,14 +174,80 @@
 					secondCreated = true;
 				}
 
+/*				if (gateCondition == "third") {
+					applauseAudio.SetActive (true);
+					confettiParticle.SetActive (true);
+					thirdCreated = true;
+				}
+*/
+
 			// Andy should look at the camera but still be flush with the plane.
 			andyObject.transform.LookAt (m_firstPersonCamera.transform);
 			andyObject.transform.rotation = Quaternion.Euler (0.0f,
 				andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
 
+				//set first position as these things so it can be replaced later
+				if (gateCondition == "first") {
+					firstObjectRot = andyObject.transform.rotation;
+					firstObjectPos = hit.Point;				
+				}
+
+				
 			// Use a plane attachment component to maintain Andy's y-offset from the plane
 			// (occurs after anchor updates).
 			andyObject.GetComponent<PlaneAttachment> ().Attach (hit.Plane);
+			}
+
+		}
+
+
+
+
+		void TouchParty (GameObject showObject)
+		{
+
+					Touch touch;
+			if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
+			{
+				return;
+			}
+
+			TrackableHit hit;
+			TrackableHitFlag raycastFilter = TrackableHitFlag.PlaneWithinBounds | TrackableHitFlag.PlaneWithinPolygon;
+
+
+		if (Session.Raycast (m_firstPersonCamera.ScreenPointToRay (touch.position), raycastFilter, out hit)) {
+
+			// Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
+			// world evolves.
+			//var anchor = Session.CreateAnchor (hit.Point, Quaternion.identity);
+			// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
+			// from the anchor's tracking.
+
+
+				// this probably doesn't need to be an array and loop but i kinda want to keep it for a minute...
+				GameObject[] gameobjects = GameObject.FindGameObjectsWithTag("destroyable");
+				foreach (GameObject g in gameobjects) {
+					Destroy(g);
+				}
+
+				Object.Instantiate (showObject, firstObjectPos, firstObjectRot);
+
+
+
+					applauseAudio.SetActive (true);
+					confettiParticle.SetActive (true);
+					thirdCreated = true;
+
+
+			// Andy should look at the camera but still be flush with the plane.
+			/*andyObject.transform.LookAt (m_firstPersonCamera.transform);
+			andyObject.transform.rotation = Quaternion.Euler (0.0f,
+				andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
+			*/
+			// Use a plane attachment component to maintain Andy's y-offset from the plane
+			// (occurs after anchor updates).
+			//andyObject.GetComponent<PlaneAttachment> ().Attach (hit.Plane);
 			}
 
 		}
