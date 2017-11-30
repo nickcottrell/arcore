@@ -158,6 +158,17 @@
 
 					//OR with Tag
 
+
+					//*********SO this is where the condition can happen on touch of a specific object.
+					// this is what i want:
+					// 1. touch the key
+					// 2. destroy the key
+					// 3. instantiate the key in 2D screenspace
+					// 4. set a flag that the chest is unlocked
+					// 5. touch the chest
+					// 6. destroy the 2D screenspace key
+					// 7. swap the closed chest with the open chest
+
 					if (raycastHit.collider.CompareTag("key"))
 					{
 						testAudio.SetActive (true);
