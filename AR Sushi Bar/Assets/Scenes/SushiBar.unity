@@ -255,7 +255,7 @@ MonoBehaviour:
   m_firstPersonCamera: {fileID: 989943870}
   m_trackedPlanePrefab: {fileID: 1654175882956584, guid: 6a35c744e5010405c847fad90282d2be,
     type: 2}
-  m_andyAndroidPrefab: {fileID: 1295024853269696, guid: 9b16a1dc6c65f434b8d4c649347fc0fb,
+  m_sushiPrefab: {fileID: 1295024853269696, guid: 9b16a1dc6c65f434b8d4c649347fc0fb,
     type: 2}
   m_searchingForPlaneUI: {fileID: 1133631540}
 --- !u!20 &989943870 stripped

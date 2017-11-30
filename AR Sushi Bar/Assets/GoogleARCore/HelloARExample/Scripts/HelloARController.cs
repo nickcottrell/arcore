@@ -1,53 +1,25 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="HelloARController.cs" company="Google">
-//
-// Copyright 2017 Google Inc. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
-//-----------------------------------------------------------------------
-
-namespace GoogleARCore.HelloAR
+﻿namespace GoogleARCore.HelloAR
 {
     using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.Rendering;
     using GoogleARCore;
 
-    /// <summary>
-    /// Controlls the HelloAR example.
-    /// </summary>
     public class HelloARController : MonoBehaviour
     {
-        /// <summary>
-        /// The first-person camera being used to render the passthrough camera.
-        /// </summary>
+
         public Camera m_firstPersonCamera;
 
-        /// <summary>
-        /// A prefab for tracking and visualizing detected planes.
-        /// </summary>
-        public GameObject m_trackedPlanePrefab;
+		public GameObject m_trackedPlanePrefab;
 
-        /// <summary>
-        /// A model to place when a raycast from a user touch hits a plane.
-        /// </summary>
-        public GameObject m_andyAndroidPrefab;
+        public GameObject m_sushiPrefab;
 
-        /// <summary>
-        /// A gameobject parenting UI for displaying the "searching for planes" snackbar.
-        /// </summary>
+		//public GameObject m_andyPrefab;
+
+
+		//***create a flag that we can switch on when we instantiate the object
+	 	bool isCreated = false;
+
         public GameObject m_searchingForPlaneUI;
 
         private List<TrackedPlane> m_newPlanes = new List<TrackedPlane>();
@@ -71,10 +43,7 @@ namespace GoogleARCore.HelloAR
             new Color(1.0f, 0.921f, 0.231f),
             new Color(1.0f, 0.756f, 0.027f)
         };
-
-        /// <summary>
-        /// The Unity Update() method.
-        /// </summary>
+			
         public void Update ()
         {
             _QuitOnConnectionErrors();
@@ -129,31 +98,37 @@ namespace GoogleARCore.HelloAR
             TrackableHit hit;
             TrackableHitFlag raycastFilter = TrackableHitFlag.PlaneWithinBounds | TrackableHitFlag.PlaneWithinPolygon;
 
-            if (Session.Raycast(m_firstPersonCamera.ScreenPointToRay(touch.position), raycastFilter, out hit))
-            {
-                // Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
-                // world evolves.
-                var anchor = Session.CreateAnchor(hit.Point, Quaternion.identity);
+								
+				if (Session.Raycast (m_firstPersonCamera.ScreenPointToRay (touch.position), raycastFilter, out hit)) {
+					
+					// Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
+					// world evolves.
+						var anchor = Session.CreateAnchor (hit.Point, Quaternion.identity);
+					
+						//only do this if the flag is set to false
+						if (isCreated == false) {
+							// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
+							// from the anchor's tracking.
+							var andyObject = Instantiate (m_sushiPrefab, hit.Point, Quaternion.identity, anchor.transform);
+						
+							//***set this to true so we only do ^^^ 1 time.
+							isCreated = true; 
 
-                // Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
-                // from the anchor's tracking.
-                var andyObject = Instantiate(m_andyAndroidPrefab, hit.Point, Quaternion.identity,
-                    anchor.transform);
+					// Andy should look at the camera but still be flush with the plane.
+						andyObject.transform.LookAt (m_firstPersonCamera.transform);
+						andyObject.transform.rotation = Quaternion.Euler (0.0f,
+							andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
 
-                // Andy should look at the camera but still be flush with the plane.
-                andyObject.transform.LookAt(m_firstPersonCamera.transform);
-                andyObject.transform.rotation = Quaternion.Euler(0.0f,
-                    andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
-
-                // Use a plane attachment component to maintain Andy's y-offset from the plane
-                // (occurs after anchor updates).
-                andyObject.GetComponent<PlaneAttachment>().Attach(hit.Plane);
-            }
+					// Use a plane attachment component to maintain Andy's y-offset from the plane
+					// (occurs after anchor updates).
+						andyObject.GetComponent<PlaneAttachment> ().Attach (hit.Plane);
+						
+					}
+				}
+				
         }
 
-        /// <summary>
-        /// Quit the application if there was a connection error for the ARCore session.
-        /// </summary>
+
         private void _QuitOnConnectionErrors()
         {
             // Do not update if ARCore is not tracking.
@@ -174,11 +149,7 @@ namespace GoogleARCore.HelloAR
             }
         }
 
-        /// <summary>
-        /// Show an Android toast message.
-        /// </summary>
-        /// <param name="message">Message string to show in the toast.</param>
-        /// <param name="length">Toast message time length.</param>
+
         private static void _ShowAndroidToastMessage(string message)
         {
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
