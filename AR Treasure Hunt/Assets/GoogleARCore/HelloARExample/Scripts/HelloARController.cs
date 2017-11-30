@@ -20,6 +20,9 @@
 
 		public GameObject applauseAudio;
 
+		public GameObject testAudio;
+
+
 		public GameObject confettiParticle;
 
 		public Quaternion firstObjectRot;
@@ -59,6 +62,7 @@
 		{
 			applauseAudio.SetActive (false);
 			confettiParticle.SetActive (false);
+			testAudio.SetActive (false);
 		}
 
 
@@ -139,8 +143,34 @@
 
 
 
-				
-        }
+
+			if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
+			{
+				Ray raycast = m_firstPersonCamera.ScreenPointToRay(Input.GetTouch(0).position);
+				RaycastHit raycastHit;
+				if (Physics.Raycast(raycast, out raycastHit))
+				{
+					//Debug.Log("Something Hit");
+					//if (raycastHit.collider.name == "Soccer")
+					//{
+					//	Debug.Log("Soccer Ball clicked");
+					//}
+
+					//OR with Tag
+
+					if (raycastHit.collider.CompareTag("key"))
+					{
+						testAudio.SetActive (true);
+
+					}
+				}
+			}
+
+		}
+
+
+
+
 
 
 		void MakeObjectNow (GameObject prefabObject, string gateCondition)

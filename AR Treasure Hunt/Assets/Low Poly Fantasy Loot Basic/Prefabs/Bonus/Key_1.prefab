@@ -10,9 +10,10 @@ GameObject:
   - component: {fileID: 476238}
   - component: {fileID: 3394632}
   - component: {fileID: 2335524}
+  - component: {fileID: 65076325877497794}
   m_Layer: 0
   m_Name: Key_1
-  m_TagString: Untagged
+  m_TagString: key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82,3 +83,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 116346}
   m_IsPrefabParent: 1
+--- !u!65 &65076325877497794
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 116346}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3499196, y: 0.024999999, z: 0.12139549}
+  m_Center: {x: -0.000000074505806, y: 0.012499999, z: 0}
