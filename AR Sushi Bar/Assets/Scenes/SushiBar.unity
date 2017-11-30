@@ -255,10 +255,10 @@ MonoBehaviour:
   m_firstPersonCamera: {fileID: 989943870}
   m_trackedPlanePrefab: {fileID: 1654175882956584, guid: 6a35c744e5010405c847fad90282d2be,
     type: 2}
-  m_sushiPrefab: {fileID: 1295024853269696, guid: 9b16a1dc6c65f434b8d4c649347fc0fb,
-    type: 2}
-  m_andyPrefab: {fileID: 1190091649889860, guid: 242a320930b81430ba610f94f9b760c8,
-    type: 2}
+  m_firstObject: {fileID: 162046, guid: 8dc076ad56e2e3c4c8076853aa3d564f, type: 2}
+  m_secondObject: {fileID: 148118, guid: d6ff56923d9951f4db9041d25c52d8ac, type: 2}
+  firstCreated: 0
+  secondCreated: 0
   m_searchingForPlaneUI: {fileID: 1133631540}
 --- !u!20 &989943870 stripped
 Camera:
@@ -654,7 +654,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Searching for a sushi bar surface\u2026"
+  m_Text: "Searching for a surface to put the treasure\u2026"
 --- !u!222 &1764419358
 CanvasRenderer:
   m_ObjectHideFlags: 0

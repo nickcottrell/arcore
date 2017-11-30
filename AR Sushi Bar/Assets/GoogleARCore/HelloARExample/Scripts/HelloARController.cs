@@ -12,14 +12,14 @@
 
 		public GameObject m_trackedPlanePrefab;
 
-        public GameObject m_sushiPrefab;
+        public GameObject m_firstObject;
 
-		public GameObject m_andyPrefab;
+		public GameObject m_secondObject;
 
 
 		//***create a flag that we can switch on when we instantiate the object
-	 	bool firstCreated = false;
-		bool secondCreated = false;
+	 	public bool firstCreated = false;
+		public bool secondCreated = false;
 
         public GameObject m_searchingForPlaneUI;
 
@@ -90,58 +90,19 @@
 
             m_searchingForPlaneUI.SetActive(showSearchingUI);
 
-            Touch touch;
-            if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
-            {
-                return;
-            }
-
-            TrackableHit hit;
-            TrackableHitFlag raycastFilter = TrackableHitFlag.PlaneWithinBounds | TrackableHitFlag.PlaneWithinPolygon;
-
+     
 								
-				if (Session.Raycast (m_firstPersonCamera.ScreenPointToRay (touch.position), raycastFilter, out hit)) {
+				
 					
-					// Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
-					// world evolves.
-						var anchor = Session.CreateAnchor (hit.Point, Quaternion.identity);
-					
-						//only do this if the flag is set to false
 						if (firstCreated == false && secondCreated == false) {
-							// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
-							// from the anchor's tracking.
-							var andyObject = Instantiate (m_sushiPrefab, hit.Point, Quaternion.identity, anchor.transform);
-						
-							//***set this to true so we only do ^^^ 1 time.
-							firstCreated = true; 
-
-							// Andy should look at the camera but still be flush with the plane.
-							andyObject.transform.LookAt (m_firstPersonCamera.transform);
-							andyObject.transform.rotation = Quaternion.Euler (0.0f,
-								andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
-
-							// Use a plane attachment component to maintain Andy's y-offset from the plane
-							// (occurs after anchor updates).
-							andyObject.GetComponent<PlaneAttachment> ().Attach (hit.Plane);
+							
+							MakeObjectNow (m_firstObject, "first" );
 							
 						}
 
 						if (firstCreated == true && secondCreated == false) {
-							// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
-							// from the anchor's tracking.
-							var andyObject = Instantiate (m_andyPrefab, hit.Point, Quaternion.identity, anchor.transform);
-
-							//***set this to true so we only do ^^^ 1 time.
-							secondCreated = true;
-
-							// Andy should look at the camera but still be flush with the plane.
-							andyObject.transform.LookAt (m_firstPersonCamera.transform);
-							andyObject.transform.rotation = Quaternion.Euler (0.0f,
-								andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
-
-							// Use a plane attachment component to maintain Andy's y-offset from the plane
-							// (occurs after anchor updates).
-							andyObject.GetComponent<PlaneAttachment> ().Attach (hit.Plane);
+		
+							MakeObjectNow (m_secondObject, "second" );
 
 						}
 
@@ -153,9 +114,54 @@
 
 
 
-				}
 				
         }
+
+
+		void MakeObjectNow (GameObject prefabObject, string gateCondition)
+		{
+
+			Touch touch;
+			if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
+			{
+				return;
+			}
+
+			TrackableHit hit;
+			TrackableHitFlag raycastFilter = TrackableHitFlag.PlaneWithinBounds | TrackableHitFlag.PlaneWithinPolygon;
+
+
+		if (Session.Raycast (m_firstPersonCamera.ScreenPointToRay (touch.position), raycastFilter, out hit)) {
+
+			// Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
+			// world evolves.
+			var anchor = Session.CreateAnchor (hit.Point, Quaternion.identity);
+			// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
+			// from the anchor's tracking.
+			var andyObject = Instantiate (prefabObject, hit.Point, Quaternion.identity, anchor.transform);
+
+				//***set this to true so we only do ^^^ 1 time.
+				if (gateCondition == "first") {
+					firstCreated = true;
+				}
+
+				if (gateCondition == "second") {
+					secondCreated = true;
+				}
+
+			// Andy should look at the camera but still be flush with the plane.
+			andyObject.transform.LookAt (m_firstPersonCamera.transform);
+			andyObject.transform.rotation = Quaternion.Euler (0.0f,
+				andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
+
+			// Use a plane attachment component to maintain Andy's y-offset from the plane
+			// (occurs after anchor updates).
+			andyObject.GetComponent<PlaneAttachment> ().Attach (hit.Plane);
+			}
+
+		}
+
+
 
 
         private void _QuitOnConnectionErrors()
