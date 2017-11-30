@@ -257,6 +257,8 @@ MonoBehaviour:
     type: 2}
   m_sushiPrefab: {fileID: 1295024853269696, guid: 9b16a1dc6c65f434b8d4c649347fc0fb,
     type: 2}
+  m_andyPrefab: {fileID: 1190091649889860, guid: 242a320930b81430ba610f94f9b760c8,
+    type: 2}
   m_searchingForPlaneUI: {fileID: 1133631540}
 --- !u!20 &989943870 stripped
 Camera:

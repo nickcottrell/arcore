@@ -14,11 +14,12 @@
 
         public GameObject m_sushiPrefab;
 
-		//public GameObject m_andyPrefab;
+		public GameObject m_andyPrefab;
 
 
 		//***create a flag that we can switch on when we instantiate the object
-	 	bool isCreated = false;
+	 	bool firstCreated = false;
+		bool secondCreated = false;
 
         public GameObject m_searchingForPlaneUI;
 
@@ -106,24 +107,52 @@
 						var anchor = Session.CreateAnchor (hit.Point, Quaternion.identity);
 					
 						//only do this if the flag is set to false
-						if (isCreated == false) {
+						if (firstCreated == false && secondCreated == false) {
 							// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
 							// from the anchor's tracking.
 							var andyObject = Instantiate (m_sushiPrefab, hit.Point, Quaternion.identity, anchor.transform);
 						
 							//***set this to true so we only do ^^^ 1 time.
-							isCreated = true; 
+							firstCreated = true; 
 
-					// Andy should look at the camera but still be flush with the plane.
-						andyObject.transform.LookAt (m_firstPersonCamera.transform);
-						andyObject.transform.rotation = Quaternion.Euler (0.0f,
-							andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
+							// Andy should look at the camera but still be flush with the plane.
+							andyObject.transform.LookAt (m_firstPersonCamera.transform);
+							andyObject.transform.rotation = Quaternion.Euler (0.0f,
+								andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
 
-					// Use a plane attachment component to maintain Andy's y-offset from the plane
-					// (occurs after anchor updates).
-						andyObject.GetComponent<PlaneAttachment> ().Attach (hit.Plane);
-						
-					}
+							// Use a plane attachment component to maintain Andy's y-offset from the plane
+							// (occurs after anchor updates).
+							andyObject.GetComponent<PlaneAttachment> ().Attach (hit.Plane);
+							
+						}
+
+						if (firstCreated == true && secondCreated == false) {
+							// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
+							// from the anchor's tracking.
+							var andyObject = Instantiate (m_andyPrefab, hit.Point, Quaternion.identity, anchor.transform);
+
+							//***set this to true so we only do ^^^ 1 time.
+							secondCreated = true;
+
+							// Andy should look at the camera but still be flush with the plane.
+							andyObject.transform.LookAt (m_firstPersonCamera.transform);
+							andyObject.transform.rotation = Quaternion.Euler (0.0f,
+								andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
+
+							// Use a plane attachment component to maintain Andy's y-offset from the plane
+							// (occurs after anchor updates).
+							andyObject.GetComponent<PlaneAttachment> ().Attach (hit.Plane);
+
+						}
+
+						if (firstCreated == true && secondCreated == true) {
+														
+							//DO NOTHING ...for now!	
+
+						}
+
+
+
 				}
 				
         }
