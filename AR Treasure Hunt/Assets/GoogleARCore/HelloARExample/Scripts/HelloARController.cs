@@ -34,6 +34,12 @@
 		public bool secondCreated = false;
 		public bool thirdCreated = false;
 
+
+		public bool keyIsCollected = false;
+
+		public GameObject m_keyCollectedUI;
+
+
         public GameObject m_searchingForPlaneUI;
 
         private List<TrackedPlane> m_newPlanes = new List<TrackedPlane>();
@@ -63,6 +69,9 @@
 			applauseAudio.SetActive (false);
 			confettiParticle.SetActive (false);
 			testAudio.SetActive (false);
+			m_keyCollectedUI.SetActive(false);
+
+
 		}
 
 
@@ -130,8 +139,16 @@
 
 						if (firstCreated == true && secondCreated == true  && thirdCreated == false) {
 														
+							if (keyIsCollected == true) {
+
+							// 6. destroy the 2D screenspace key
+							m_keyCollectedUI.SetActive(false);
+
+							// 7. swap the closed chest with the open chest
 							TouchParty (m_endObject);
 
+
+							}
 						
 						}
 
@@ -169,9 +186,22 @@
 					// 6. destroy the 2D screenspace key
 					// 7. swap the closed chest with the open chest
 
+					// 1. touch the key
 					if (raycastHit.collider.CompareTag("key"))
 					{
 						testAudio.SetActive (true);
+
+						// 2. destroy the key
+						GameObject[] gameobjects = GameObject.FindGameObjectsWithTag("key");
+						foreach (GameObject g in gameobjects) {
+							Destroy(g);
+						}
+						// 3. instantiate the key in 2D screenspace
+						m_keyCollectedUI.SetActive(true);
+
+						// 4. set a flag that the chest is unlocked
+						keyIsCollected = true;
+
 
 					}
 				}
