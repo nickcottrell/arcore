@@ -141,9 +141,6 @@
 														
 							if (keyIsCollected == true) {
 
-							// 6. destroy the 2D screenspace key
-							m_keyCollectedUI.SetActive(false);
-
 							// 7. swap the closed chest with the open chest
 							TouchParty (m_endObject);
 
@@ -201,7 +198,7 @@
 
 						// 4. set a flag that the chest is unlocked
 						keyIsCollected = true;
-
+					
 
 					}
 				}
@@ -294,6 +291,10 @@
 			//var anchor = Session.CreateAnchor (hit.Point, Quaternion.identity);
 			// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
 			// from the anchor's tracking.
+
+
+				// 6. destroy the 2D screenspace key
+				m_keyCollectedUI.SetActive(false);
 
 
 				// this probably doesn't need to be an array and loop but i kinda want to keep it for a minute...
