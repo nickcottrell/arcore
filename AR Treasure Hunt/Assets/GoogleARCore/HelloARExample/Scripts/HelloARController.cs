@@ -188,6 +188,8 @@
 			// Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
 			// world evolves.
 			var anchor = Session.CreateAnchor (hit.Point, Quaternion.identity);
+
+
 			// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
 			// from the anchor's tracking.
 			var andyObject = Instantiate (prefabObject, hit.Point, Quaternion.identity, anchor.transform);
@@ -208,7 +210,8 @@
 
 				//set first position as these things so it can be replaced later
 				if (gateCondition == "first") {
-					firstObjectRot = andyObject.transform.rotation;
+					//firstObjectRot = andyObject.transform.rotation;
+					firstObjectRot = Quaternion.identity;
 					firstObjectPos = hit.Point;				
 				}
 
