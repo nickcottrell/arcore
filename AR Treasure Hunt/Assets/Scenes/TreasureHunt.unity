@@ -4335,7 +4335,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Searching for a place to drop ye treasure...
+  m_Text: Findin' a place to drop ye treasure...
 --- !u!222 &1764419358
 CanvasRenderer:
   m_ObjectHideFlags: 0

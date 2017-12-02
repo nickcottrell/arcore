@@ -22,14 +22,13 @@
 
 		public GameObject testAudio;
 
-
 		public GameObject confettiParticle;
 
 		public Quaternion firstObjectRot;
 
 		public Vector3 firstObjectPos;
 
-		//***create a flag that we can switch on when we instantiate the object
+		//create a flag that we can switch on when we instantiate the object
 	 	public bool firstCreated = false;
 		public bool secondCreated = false;
 		public bool thirdCreated = false;
@@ -38,7 +37,6 @@
 		public bool keyIsCollected = false;
 
 		public GameObject m_keyCollectedUI;
-
 
         public GameObject m_searchingForPlaneUI;
 
@@ -122,41 +120,26 @@
             m_searchingForPlaneUI.SetActive(showSearchingUI);
 
      
-						//BASIC GAME LOGIC CONDITIONS	
-				
-					
-						if (firstCreated == false && secondCreated == false && thirdCreated == false) {
-							
-							MakeObjectNow (m_firstObject, "first" );
-							
-						}
+			//BASIC GAME LOGIC CONDITIONS	
+			if (firstCreated == false && secondCreated == false && thirdCreated == false) {
+				MakeObjectNow (m_firstObject, "first" );
+				}
 
-						if (firstCreated == true && secondCreated == false  && thirdCreated == false) {
-		
-							MakeObjectNow (m_secondObject, "second" );
+			if (firstCreated == true && secondCreated == false  && thirdCreated == false) {
+				MakeObjectNow (m_secondObject, "second" );
+				}
 
-						}
-
-						if (firstCreated == true && secondCreated == true  && thirdCreated == false) {
+			if (firstCreated == true && secondCreated == true  && thirdCreated == false) {
 														
-							if (keyIsCollected == true) {
-
-							// 7. swap the closed chest with the open chest
-							TouchParty (m_endObject);
-
-
-							}
-						
-						}
-
-						if (firstCreated == true && secondCreated == true  && thirdCreated == true) {
-
-						// do nothing
-
-						}
-
-
-
+				if (keyIsCollected == true) {
+					// swap the closed chest with the open chest
+					TouchParty (m_endObject);
+					}
+				}
+				
+			if (firstCreated == true && secondCreated == true  && thirdCreated == true) {
+				// do nothing
+				}
 
 			if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
 			{
@@ -164,39 +147,20 @@
 				RaycastHit raycastHit;
 				if (Physics.Raycast(raycast, out raycastHit))
 				{
-					//Debug.Log("Something Hit");
-					//if (raycastHit.collider.name == "Soccer")
-					//{
-					//	Debug.Log("Soccer Ball clicked");
-					//}
-
-					//OR with Tag
-
-
-					//*********SO this is where the condition can happen on touch of a specific object.
-					// this is what i want:
-					// 1. touch the key
-					// 2. destroy the key
-					// 3. instantiate the key in 2D screenspace
-					// 4. set a flag that the chest is unlocked
-					// 5. touch the chest
-					// 6. destroy the 2D screenspace key
-					// 7. swap the closed chest with the open chest
-
-					// 1. touch the key
+					// touch the key
 					if (raycastHit.collider.CompareTag("key"))
 					{
 						testAudio.SetActive (true);
 
-						// 2. destroy the key
+						// destroy the key
 						GameObject[] gameobjects = GameObject.FindGameObjectsWithTag("key");
 						foreach (GameObject g in gameobjects) {
 							Destroy(g);
 						}
-						// 3. instantiate the key in 2D screenspace
+						// instantiate the key in 2D screenspace
 						m_keyCollectedUI.SetActive(true);
 
-						// 4. set a flag that the chest is unlocked
+						// set a flag that the chest is unlocked
 						keyIsCollected = true;
 					
 
@@ -205,12 +169,7 @@
 			}
 
 		}
-
-
-
-
-
-
+			
 		void MakeObjectNow (GameObject prefabObject, string gateCondition)
 		{
 
@@ -242,13 +201,6 @@
 					secondCreated = true;
 				}
 
-/*				if (gateCondition == "third") {
-					applauseAudio.SetActive (true);
-					confettiParticle.SetActive (true);
-					thirdCreated = true;
-				}
-*/
-
 			// Andy should look at the camera but still be flush with the plane.
 			andyObject.transform.LookAt (m_firstPersonCamera.transform);
 			andyObject.transform.rotation = Quaternion.Euler (0.0f,
@@ -260,7 +212,6 @@
 					firstObjectPos = hit.Point;				
 				}
 
-				
 			// Use a plane attachment component to maintain Andy's y-offset from the plane
 			// (occurs after anchor updates).
 			andyObject.GetComponent<PlaneAttachment> ().Attach (hit.Plane);
@@ -268,9 +219,7 @@
 
 		}
 
-
-
-
+	
 		void TouchParty (GameObject showObject)
 		{
 
@@ -286,14 +235,7 @@
 
 		if (Session.Raycast (m_firstPersonCamera.ScreenPointToRay (touch.position), raycastFilter, out hit)) {
 
-			// Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
-			// world evolves.
-			//var anchor = Session.CreateAnchor (hit.Point, Quaternion.identity);
-			// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
-			// from the anchor's tracking.
-
-
-				// 6. destroy the 2D screenspace key
+				// destroy the 2D screenspace key
 				m_keyCollectedUI.SetActive(false);
 
 
@@ -305,26 +247,14 @@
 
 				Object.Instantiate (showObject, firstObjectPos, firstObjectRot);
 
+				applauseAudio.SetActive (true);
+				confettiParticle.SetActive (true);
+				thirdCreated = true;
 
-
-					applauseAudio.SetActive (true);
-					confettiParticle.SetActive (true);
-					thirdCreated = true;
-
-
-			// Andy should look at the camera but still be flush with the plane.
-			/*andyObject.transform.LookAt (m_firstPersonCamera.transform);
-			andyObject.transform.rotation = Quaternion.Euler (0.0f,
-				andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
-			*/
-			// Use a plane attachment component to maintain Andy's y-offset from the plane
-			// (occurs after anchor updates).
-			//andyObject.GetComponent<PlaneAttachment> ().Attach (hit.Plane);
+			
 			}
 
 		}
-
-
 
 
         private void _QuitOnConnectionErrors()
