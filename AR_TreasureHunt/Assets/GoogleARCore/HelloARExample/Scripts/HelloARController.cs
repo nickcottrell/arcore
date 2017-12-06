@@ -20,21 +20,19 @@
 
 		public GameObject applauseAudio;
 
-		public GameObject testAudio;
-
 		public GameObject confettiParticle;
 
-		public Quaternion firstObjectRot;
+		private Quaternion firstObjectRot;
 
-		public Vector3 firstObjectPos;
+		private Vector3 firstObjectPos;
 
 		//create a flag that we can switch on when we instantiate the object
-	 	public bool firstCreated = false;
-		public bool secondCreated = false;
-		public bool thirdCreated = false;
+		private bool firstCreated = false;
+		private bool secondCreated = false;
+		private bool thirdCreated = false;
 
 
-		public bool keyIsCollected = false;
+		private bool keyIsCollected = false;
 
 		public GameObject m_keyCollectedUI;
 
@@ -66,7 +64,7 @@
 		{
 			applauseAudio.SetActive (false);
 			confettiParticle.SetActive (false);
-			testAudio.SetActive (false);
+			//testAudio.SetActive (false);
 			m_keyCollectedUI.SetActive(false);
 
 
@@ -150,7 +148,7 @@
 					// touch the key
 					if (raycastHit.collider.CompareTag("key"))
 					{
-						testAudio.SetActive (true);
+						//testAudio.SetActive (true);
 
 						// destroy the key
 						GameObject[] gameobjects = GameObject.FindGameObjectsWithTag("key");
