@@ -1,41 +1,53 @@
-﻿namespace GoogleARCore.HelloAR
+﻿//-----------------------------------------------------------------------
+// <copyright file="HelloARController.cs" company="Google">
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace GoogleARCore.HelloAR
 {
     using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.Rendering;
     using GoogleARCore;
 
+    /// <summary>
+    /// Controlls the HelloAR example.
+    /// </summary>
     public class HelloARController : MonoBehaviour
     {
-
+        /// <summary>
+        /// The first-person camera being used to render the passthrough camera.
+        /// </summary>
         public Camera m_firstPersonCamera;
 
-		public GameObject m_trackedPlanePrefab;
+        /// <summary>
+        /// A prefab for tracking and visualizing detected planes.
+        /// </summary>
+        public GameObject m_trackedPlanePrefab;
 
-        public GameObject m_firstObject;
+        /// <summary>
+        /// A model to place when a raycast from a user touch hits a plane.
+        /// </summary>
+        public GameObject m_andyAndroidPrefab;
 
-		public GameObject m_secondObject;
-
-		public GameObject m_endObject;
-
-		public GameObject applauseAudio;
-
-		public GameObject confettiParticle;
-
-		private Quaternion firstObjectRot;
-
-		private Vector3 firstObjectPos;
-
-		//create a flag that we can switch on when we instantiate the object
-		private bool firstCreated = false;
-		private bool secondCreated = false;
-		private bool thirdCreated = false;
-
-
-		private bool keyIsCollected = false;
-
-		public GameObject m_keyCollectedUI;
-
+        /// <summary>
+        /// A gameobject parenting UI for displaying the "searching for planes" snackbar.
+        /// </summary>
         public GameObject m_searchingForPlaneUI;
 
         private List<TrackedPlane> m_newPlanes = new List<TrackedPlane>();
@@ -59,20 +71,11 @@
             new Color(1.0f, 0.921f, 0.231f),
             new Color(1.0f, 0.756f, 0.027f)
         };
-			
-		public void Start ()
-		{
-			applauseAudio.SetActive (false);
-			confettiParticle.SetActive (false);
-			//testAudio.SetActive (false);
-			m_keyCollectedUI.SetActive(false);
 
-
-		}
-
-
-
-		public void Update ()
+        /// <summary>
+        /// The Unity Update() method.
+        /// </summary>
+        public void Update ()
         {
             _QuitOnConnectionErrors();
 
@@ -117,147 +120,40 @@
 
             m_searchingForPlaneUI.SetActive(showSearchingUI);
 
-     
-			//BASIC GAME LOGIC CONDITIONS	
-			if (firstCreated == false && secondCreated == false && thirdCreated == false) {
-				MakeObjectNow (m_firstObject, "first" );
-				}
+            Touch touch;
+            if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
+            {
+                return;
+            }
 
-			if (firstCreated == true && secondCreated == false  && thirdCreated == false) {
-				MakeObjectNow (m_secondObject, "second" );
-				}
+            TrackableHit hit;
+            TrackableHitFlag raycastFilter = TrackableHitFlag.PlaneWithinBounds | TrackableHitFlag.PlaneWithinPolygon;
 
-			if (firstCreated == true && secondCreated == true  && thirdCreated == false) {
-														
-				if (keyIsCollected == true) {
-					// swap the closed chest with the open chest
-					TouchParty (m_endObject);
-					}
-				}
-				
-			if (firstCreated == true && secondCreated == true  && thirdCreated == true) {
-				// do nothing
-				}
+            if (Session.Raycast(m_firstPersonCamera.ScreenPointToRay(touch.position), raycastFilter, out hit))
+            {
+                // Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
+                // world evolves.
+                var anchor = Session.CreateAnchor(hit.Point, Quaternion.identity);
 
-			if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
-			{
-				Ray raycast = m_firstPersonCamera.ScreenPointToRay(Input.GetTouch(0).position);
-				RaycastHit raycastHit;
-				if (Physics.Raycast(raycast, out raycastHit))
-				{
-					// touch the key
-					if (raycastHit.collider.CompareTag("key"))
-					{
-						//testAudio.SetActive (true);
+                // Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
+                // from the anchor's tracking.
+                var andyObject = Instantiate(m_andyAndroidPrefab, hit.Point, Quaternion.identity,
+                    anchor.transform);
 
-						// destroy the key
-						GameObject[] gameobjects = GameObject.FindGameObjectsWithTag("key");
-						foreach (GameObject g in gameobjects) {
-							Destroy(g);
-						}
-						// instantiate the key in 2D screenspace
-						m_keyCollectedUI.SetActive(true);
+                // Andy should look at the camera but still be flush with the plane.
+                andyObject.transform.LookAt(m_firstPersonCamera.transform);
+                andyObject.transform.rotation = Quaternion.Euler(0.0f,
+                    andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
 
-						// set a flag that the chest is unlocked
-						keyIsCollected = true;
-					
+                // Use a plane attachment component to maintain Andy's y-offset from the plane
+                // (occurs after anchor updates).
+                andyObject.GetComponent<PlaneAttachment>().Attach(hit.Plane);
+            }
+        }
 
-					}
-				}
-			}
-
-		}
-			
-		void MakeObjectNow (GameObject prefabObject, string gateCondition)
-		{
-
-			Touch touch;
-			if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
-			{
-				return;
-			}
-
-			TrackableHit hit;
-			TrackableHitFlag raycastFilter = TrackableHitFlag.PlaneWithinBounds | TrackableHitFlag.PlaneWithinPolygon;
-
-
-		if (Session.Raycast (m_firstPersonCamera.ScreenPointToRay (touch.position), raycastFilter, out hit)) {
-
-			// Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
-			// world evolves.
-			var anchor = Session.CreateAnchor (hit.Point, Quaternion.identity);
-
-
-			// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
-			// from the anchor's tracking.
-			var andyObject = Instantiate (prefabObject, hit.Point, Quaternion.identity, anchor.transform);
-
-				//***set this to true so we only do ^^^ 1 time.
-				if (gateCondition == "first") {
-					firstCreated = true;
-				}
-
-				if (gateCondition == "second") {
-					secondCreated = true;
-				}
-
-			// Andy should look at the camera but still be flush with the plane.
-			andyObject.transform.LookAt (m_firstPersonCamera.transform);
-			andyObject.transform.rotation = Quaternion.Euler (0.0f,
-				andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
-
-				//set first position as these things so it can be replaced later
-				if (gateCondition == "first") {
-					//firstObjectRot = andyObject.transform.rotation;
-					firstObjectRot = Quaternion.identity;
-					firstObjectPos = hit.Point;				
-				}
-
-			// Use a plane attachment component to maintain Andy's y-offset from the plane
-			// (occurs after anchor updates).
-			andyObject.GetComponent<PlaneAttachment> ().Attach (hit.Plane);
-			}
-
-		}
-
-	
-		void TouchParty (GameObject showObject)
-		{
-
-					Touch touch;
-			if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
-			{
-				return;
-			}
-
-			TrackableHit hit;
-			TrackableHitFlag raycastFilter = TrackableHitFlag.PlaneWithinBounds | TrackableHitFlag.PlaneWithinPolygon;
-
-
-		if (Session.Raycast (m_firstPersonCamera.ScreenPointToRay (touch.position), raycastFilter, out hit)) {
-
-				// destroy the 2D screenspace key
-				m_keyCollectedUI.SetActive(false);
-
-
-				// this probably doesn't need to be an array and loop but i kinda want to keep it for a minute...
-				GameObject[] gameobjects = GameObject.FindGameObjectsWithTag("destroyable");
-				foreach (GameObject g in gameobjects) {
-					Destroy(g);
-				}
-
-				Object.Instantiate (showObject, firstObjectPos, firstObjectRot);
-
-				applauseAudio.SetActive (true);
-				confettiParticle.SetActive (true);
-				thirdCreated = true;
-
-			
-			}
-
-		}
-
-
+        /// <summary>
+        /// Quit the application if there was a connection error for the ARCore session.
+        /// </summary>
         private void _QuitOnConnectionErrors()
         {
             // Do not update if ARCore is not tracking.
@@ -278,7 +174,11 @@
             }
         }
 
-
+        /// <summary>
+        /// Show an Android toast message.
+        /// </summary>
+        /// <param name="message">Message string to show in the toast.</param>
+        /// <param name="length">Toast message time length.</param>
         private static void _ShowAndroidToastMessage(string message)
         {
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
