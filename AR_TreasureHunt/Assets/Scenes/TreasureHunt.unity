@@ -3738,6 +3738,7 @@ GameObject:
   m_Component:
   - component: {fileID: 627916102}
   - component: {fileID: 627916103}
+  - component: {fileID: 627916104}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -3771,6 +3772,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_firstPersonCamera: {fileID: 989943870}
   m_trackedPlanePrefab: {fileID: 1654175882956584, guid: 6a35c744e5010405c847fad90282d2be,
+    type: 2}
+  m_firstObject: {fileID: 162046, guid: 93e935b310b9342a59b006958f1db366, type: 2}
+  m_secondObject: {fileID: 116346, guid: be376d404b0b44cbc80588f02f9469ab, type: 2}
+  m_endObject: {fileID: 183670, guid: 029bef53e5b3e4dc1bb96ccbab9d0f17, type: 2}
+  applauseAudio: {fileID: 1342767254}
+  confettiParticle: {fileID: 192468349}
+  m_keyCollectedUI: {fileID: 436900770}
+  m_searchingForPlaneUI: {fileID: 1133631540}
+--- !u!114 &627916104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 627916101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed320ab44c9294716b176a027d78b541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_firstPersonCamera: {fileID: 989943870}
+  m_trackedPlanePrefab: {fileID: 1654175882956584, guid: 593233fb1134241da97374dc9c3cd2f2,
     type: 2}
   m_firstObject: {fileID: 162046, guid: 93e935b310b9342a59b006958f1db366, type: 2}
   m_secondObject: {fileID: 116346, guid: be376d404b0b44cbc80588f02f9469ab, type: 2}
