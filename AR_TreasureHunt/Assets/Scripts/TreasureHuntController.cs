@@ -5,8 +5,7 @@
 
     public class TreasureHuntController : MonoBehaviour
     {
-
-        public Camera m_firstPersonCamera;
+		public Camera m_firstPersonCamera;
 
 		public GameObject m_trackedPlanePrefab;
 
@@ -16,21 +15,21 @@
 
 		public GameObject m_endObject;
 
-		public GameObject applauseAudio;
+		public GameObject m_applauseAudio;
 
-		public GameObject confettiParticle;
+		public GameObject m_confettiParticle;
+		
+		private Quaternion m_firstObjectRot;
 
-		private Quaternion firstObjectRot;
+		private Vector3 m_firstObjectPos;
 
-		private Vector3 firstObjectPos;
+		private bool m_firstCreated = false;
+		
+		private bool m_secondCreated = false;
+		
+		private bool m_thirdCreated = false;
 
-		//create a flag that we can switch on when we instantiate the object
-		private bool firstCreated = false;
-		private bool secondCreated = false;
-		private bool thirdCreated = false;
-
-
-		private bool keyIsCollected = false;
+		private bool m_keyIsCollected = false;
 
 		public GameObject m_keyCollectedUI;
 
@@ -60,20 +59,15 @@
 			
 		public void Start ()
 		{
-			applauseAudio.SetActive (false);
-			confettiParticle.SetActive (false);
-			//testAudio.SetActive (false);
-			m_keyCollectedUI.SetActive(false);
-
-
+			m_applauseAudio.SetActive (false);
+			m_confettiParticle.SetActive (false);
+			m_keyCollectedUI.SetActive (false);
 		}
-
-
+		
 
 		public void Update ()
         {
             _QuitOnConnectionErrors();
-
             // The tracking state must be FrameTrackingState.Tracking in order to access the Frame.
             if (Frame.TrackingState != FrameTrackingState.Tracking)
             {
@@ -86,16 +80,13 @@
             Frame.GetNewPlanes(ref m_newPlanes);
 
             // Iterate over planes found in this frame and instantiate corresponding GameObjects to visualize them.
-            for (int i = 0; i < m_newPlanes.Count; i++)
-            {
+            for (int i = 0; i < m_newPlanes.Count; i++) {
                 // Instantiate a plane visualization prefab and set it to track the new plane. The transform is set to
                 // the origin with an identity rotation since the mesh for our prefab is updated in Unity World
                 // coordinates.
-                GameObject planeObject = Instantiate(m_trackedPlanePrefab, Vector3.zero, Quaternion.identity,
+              	GameObject planeObject = Instantiate(m_trackedPlanePrefab, Vector3.zero, Quaternion.identity,
                     transform);
-			planeObject.GetComponent<GoogleARCore.HelloAR.TrackedPlaneVisualizer>().SetTrackedPlane(m_newPlanes[i]);
-	
-
+				planeObject.GetComponent<GoogleARCore.HelloAR.TrackedPlaneVisualizer>().SetTrackedPlane(m_newPlanes[i]);
                 // Apply a random color and grid rotation.
                 planeObject.GetComponent<Renderer>().material.SetColor("_GridColor", m_planeColors[Random.Range(0,
                     m_planeColors.Length - 1)]);
@@ -105,10 +96,8 @@
             // Disable the snackbar UI when no planes are valid.
             bool showSearchingUI = true;
             Frame.GetAllPlanes(ref m_allPlanes);
-            for (int i = 0; i < m_allPlanes.Count; i++)
-            {
-                if (m_allPlanes[i].IsValid)
-                {
+			for (int i = 0; i < m_allPlanes.Count; i++) {
+                if (m_allPlanes[i].IsValid){
                     showSearchingUI = false;
                     break;
                 }
@@ -118,37 +107,32 @@
 
      
 			//BASIC GAME LOGIC CONDITIONS	
-			if (firstCreated == false && secondCreated == false && thirdCreated == false) {
+			if (m_firstCreated == false && m_secondCreated == false && m_thirdCreated == false) {
 				MakeObjectNow (m_firstObject, "first" );
 				}
 
-			if (firstCreated == true && secondCreated == false  && thirdCreated == false) {
+			if (m_firstCreated == true && m_secondCreated == false  && m_thirdCreated == false) {
 				MakeObjectNow (m_secondObject, "second" );
 				}
 
-			if (firstCreated == true && secondCreated == true  && thirdCreated == false) {
+			if (m_firstCreated == true && m_secondCreated == true  && m_thirdCreated == false) {
 														
-				if (keyIsCollected == true) {
+				if (m_keyIsCollected == true) {
 					// swap the closed chest with the open chest
 					TouchParty (m_endObject);
 					}
 				}
 				
-			if (firstCreated == true && secondCreated == true  && thirdCreated == true) {
+			if (m_firstCreated == true && m_secondCreated == true  && m_thirdCreated == true) {
 				// do nothing
 				}
 
-			if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
-			{
+			if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began)) {
 				Ray raycast = m_firstPersonCamera.ScreenPointToRay(Input.GetTouch(0).position);
 				RaycastHit raycastHit;
-				if (Physics.Raycast(raycast, out raycastHit))
-				{
+				if (Physics.Raycast(raycast, out raycastHit)) {
 					// touch the key
-					if (raycastHit.collider.CompareTag("key"))
-					{
-						//testAudio.SetActive (true);
-
+					if (raycastHit.collider.CompareTag("key")){
 						// destroy the key
 						GameObject[] gameobjects = GameObject.FindGameObjectsWithTag("key");
 						foreach (GameObject g in gameobjects) {
@@ -156,10 +140,8 @@
 						}
 						// instantiate the key in 2D screenspace
 						m_keyCollectedUI.SetActive(true);
-
 						// set a flag that the chest is unlocked
-						keyIsCollected = true;
-					
+						m_keyIsCollected = true;
 
 					}
 				}
@@ -171,8 +153,7 @@
 		{
 
 			Touch touch;
-			if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
-			{
+			if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began) {
 				return;
 			}
 
@@ -186,31 +167,30 @@
 			// world evolves.
 			var anchor = Session.CreateAnchor (hit.Point, Quaternion.identity);
 
-
 			// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
 			// from the anchor's tracking.
 			var andyObject = Instantiate (prefabObject, hit.Point, Quaternion.identity, anchor.transform);
 
 				//***set this to true so we only do ^^^ 1 time.
 				if (gateCondition == "first") {
-					firstCreated = true;
+					m_firstCreated = true;
 				}
 
 				if (gateCondition == "second") {
-					secondCreated = true;
+					m_secondCreated = true;
 				}
 
 			// Andy should look at the camera but still be flush with the plane.
 			andyObject.transform.LookAt (m_firstPersonCamera.transform);
 			andyObject.transform.rotation = Quaternion.Euler (0.0f,
-				andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
+			andyObject.transform.rotation.eulerAngles.y, andyObject.transform.rotation.z);
 
-				//set first position as these things so it can be replaced later
-				if (gateCondition == "first") {
-					//firstObjectRot = andyObject.transform.rotation;
-					firstObjectRot = Quaternion.identity;
-					firstObjectPos = hit.Point;				
-				}
+			//set first position as these things so it can be replaced later
+			if (gateCondition == "first") {
+				//firstObjectRot = andyObject.transform.rotation;
+				m_firstObjectRot = Quaternion.identity;
+				m_firstObjectPos = hit.Point;				
+			}
 
 			// Use a plane attachment component to maintain Andy's y-offset from the plane
 			// (occurs after anchor updates).
@@ -224,8 +204,7 @@
 		{
 
 					Touch touch;
-			if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
-			{
+			if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began) {
 				return;
 			}
 
@@ -245,11 +224,11 @@
 					Destroy(g);
 				}
 
-				Object.Instantiate (showObject, firstObjectPos, firstObjectRot);
+				Object.Instantiate (showObject, m_firstObjectPos, m_firstObjectRot);
 
-				applauseAudio.SetActive (true);
-				confettiParticle.SetActive (true);
-				thirdCreated = true;
+				m_applauseAudio.SetActive (true);
+				m_confettiParticle.SetActive (true);
+				m_thirdCreated = true;
 
 			
 			}
