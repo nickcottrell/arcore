@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23646549736039258}
   - component: {fileID: 114776205485222536}
   m_Layer: 0
-  m_Name: TrackedPlaneVisualizer
+  m_Name: SushiBarVisualizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 92b1ca249edc047509db2c7bc05789ef, type: 2}
+  - {fileID: 2100000, guid: a43b2951cd3ad4f3581d04aa9aa57d34, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

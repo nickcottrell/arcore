@@ -253,7 +253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_firstPersonCamera: {fileID: 989943870}
-  m_trackedPlanePrefab: {fileID: 1654175882956584, guid: 6a35c744e5010405c847fad90282d2be,
+  m_trackedPlanePrefab: {fileID: 1654175882956584, guid: e6aa2dbf5fb4b4a3b8a16e3629391bb3,
     type: 2}
   m_sushiPrefab: {fileID: 1295024853269696, guid: 9b16a1dc6c65f434b8d4c649347fc0fb,
     type: 2}
