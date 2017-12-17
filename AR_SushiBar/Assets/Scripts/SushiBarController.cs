@@ -110,6 +110,49 @@
                 // (occurs after anchor updates).
 			andyObject.GetComponent<GoogleARCore.HelloAR.PlaneAttachment>().Attach(hit.Plane);
             }
+
+
+
+
+		// ***********************IN PROGRESS**************************
+
+		//i think this is where it will go. i'd run this and see if it works.
+
+
+		if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began)) {
+			Ray raycast = m_firstPersonCamera.ScreenPointToRay(Input.GetTouch(0).position);
+			RaycastHit raycastHit;
+			if (Physics.Raycast(raycast, out raycastHit)) {
+				// touch the key
+
+				// THIS WON'T WORK -- NEED TO CHANGE IT
+				// instead, this should be set up to destroy the gameobject that the raycast hits
+
+				if (raycastHit.collider.CompareTag("sushi")){
+					// destroy the key
+
+					// this also won't work -- it's really just going to need to single out the actual object that is being touched...
+					GameObject[] gameobjects = GameObject.FindGameObjectsWithTag("sushi");
+					foreach (GameObject g in gameobjects) {
+						Destroy(g);
+					}
+
+					//obv the below stuff is not needed, but good to remember that a condition can be set here if we want.
+
+					// instantiate the key in 2D screenspace
+					//m_keyCollectedUI.SetActive(true);
+					// set a flag that the chest is unlocked
+					//m_keyIsCollected = true;
+
+				}
+			}
+		}
+
+
+		// ***********************IN PROGRESS**************************
+
+
+
         }
 
         /// Quit the application if there was a connection error for the ARCore session.
