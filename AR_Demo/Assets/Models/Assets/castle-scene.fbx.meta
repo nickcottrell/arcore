@@ -1,0 +1,218 @@
+fileFormatVersion: 2
+guid: a7c36426aae6f4211b25b22fffe742d9
+timeCreated: 1514533815
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: group
+    100004: group1
+    100006: pasted__soldier_head_laugh
+    100008: pCube1
+    100010: pCube10
+    100012: pCube11
+    100014: pCube12
+    100016: pCube13
+    100018: pCube14
+    100020: pCube2
+    100022: pCube3
+    100024: pCube4
+    100026: pCube5
+    100028: pCube6
+    100030: pCube7
+    100032: pCube8
+    100034: pCube9
+    100036: polySurface365
+    100038: soldier_head_shock
+    400000: //RootNode
+    400002: group
+    400004: group1
+    400006: pasted__soldier_head_laugh
+    400008: pCube1
+    400010: pCube10
+    400012: pCube11
+    400014: pCube12
+    400016: pCube13
+    400018: pCube14
+    400020: pCube2
+    400022: pCube3
+    400024: pCube4
+    400026: pCube5
+    400028: pCube6
+    400030: pCube7
+    400032: pCube8
+    400034: pCube9
+    400036: polySurface365
+    400038: soldier_head_shock
+    2100000: Roccia_01_Mat
+    2100002: Legno02_Mat
+    2100004: Casa_01_Mat
+    2100006: Legno01_Mat
+    2100008: Mura_03_TileMat
+    2100010: Legno04_Mat
+    2100012: Ferro03_Mat
+    2100014: Glass_01_Mat
+    2100016: Water_Mat
+    2100018: Terreno_TileMat_3
+    2100020: Terreno_TileMat_4
+    2100022: Terreno_TileMat_5
+    2100024: Terreno_TileMat_6
+    2100026: Terreno_TileMat_7
+    2100028: Terreno_TileMat_8
+    2100030: Terreno_TileMat_9
+    2100032: Terreno_TileMat_1
+    2100034: Terreno_TileMat_2
+    2100036: Bordo_Zolla_01_Mat
+    2100038: Erba_01_TileMat
+    2100040: Mura_01_TileMat
+    2100042: Passerella_Legno_TopMura_02_Mat
+    2100044: RocciaMura_05_Mat
+    2100046: RocciaMura_01_Mat
+    2100048: Passerella_Legno_TopMura_TileMura
+    2100050: RocciaMura_02_Mat
+    2100052: RocciaMura_04_Mat
+    2100054: Ferro02_Mat
+    2100056: Legno03_Mat
+    2100058: RocciaMura_03_Mat
+    2100060: Zone_Ombra_Mat
+    2100062: Tetto_01_Mat
+    2100064: Tegola_02_Mat
+    2100066: Tegola_01_Mat
+    2100068: Gold_01_Mat
+    2100070: Albero01_Mat
+    2100072: Albero02_Mat1
+    2100074: lambert2
+    2100076: lambert3
+    2300000: pasted__soldier_head_laugh
+    2300002: pCube1
+    2300004: pCube10
+    2300006: pCube11
+    2300008: pCube12
+    2300010: pCube13
+    2300012: pCube14
+    2300014: pCube2
+    2300016: pCube3
+    2300018: pCube4
+    2300020: pCube5
+    2300022: pCube6
+    2300024: pCube7
+    2300026: pCube8
+    2300028: pCube9
+    2300030: polySurface365
+    2300032: soldier_head_shock
+    3300000: pasted__soldier_head_laugh
+    3300002: pCube1
+    3300004: pCube10
+    3300006: pCube11
+    3300008: pCube12
+    3300010: pCube13
+    3300012: pCube14
+    3300014: pCube2
+    3300016: pCube3
+    3300018: pCube4
+    3300020: pCube5
+    3300022: pCube6
+    3300024: pCube7
+    3300026: pCube8
+    3300028: pCube9
+    3300030: polySurface365
+    3300032: soldier_head_shock
+    4300000: polySurface365
+    4300002: soldier_head_shock
+    4300004: pasted__soldier_head_laugh
+    4300006: pCube1
+    4300008: pCube2
+    4300010: pCube3
+    4300012: pCube4
+    4300014: pCube5
+    4300016: pCube6
+    4300018: pCube7
+    4300020: pCube8
+    4300022: pCube9
+    4300024: pCube10
+    4300026: pCube11
+    4300028: pCube12
+    4300030: pCube13
+    4300032: pCube14
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
